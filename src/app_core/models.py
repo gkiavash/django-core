@@ -5,6 +5,11 @@ from model_utils.models import TimeStampedModel
 from . import mixins as core_mixins
 
 
+class Epoch(models.expressions.Func):
+    template = 'EXTRACT(epoch FROM %(expressions)s)::INTEGER'
+    output_field = models.IntegerField()
+
+
 class Resource(
     core_mixins.UuidMixin,
     core_mixins.ErrorMessageMixin,
