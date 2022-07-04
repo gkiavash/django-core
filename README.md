@@ -8,6 +8,7 @@ This repository is a generic docker based django project that is being used in a
 * Extra modules based on django-restframework, e.g. **GenericSerializer**(inspired by the concept of GraphQL), filtersets, expiring tokens, ...
 * Efficient querysets for heavy calculations, like **statistics pages**. Extra generic expressions for querysets are implemented.
 * basic configurations for firewall and nginx image
+* basic circleci ci for all containers
 
 ## How to use:
 
