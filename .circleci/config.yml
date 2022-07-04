@@ -1,0 +1,41 @@
+version: 2.1
+
+jobs:
+  build:
+    working_directory: /app
+    docker:
+      - image: docker/compose:1.29.2
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Install dependencies
+          command: |
+            docker-compose -v
+            echo "
+            POSTGRESQL_HOST=db
+            POSTGRES_USER=postgres
+            POSTGRES_PASSWORD=postgres
+            POSTGRES_DB=postgres
+
+            REDIS_HOST=redis
+            REDIS_PORT=6379
+            " >> .env
+
+      - run:
+          name: Run tests
+          command: |
+            docker-compose -f docker-compose.yml up -d
+            docker exec -it app_app_1 python3 manage.py makemigrations app_account
+            docker exec -it app_app_1 python3 manage.py migrate
+            docker exec -it app_app_1 python3 manage.py test
+
+#      - deploy:
+#          name: Push application Docker image
+#          command: |
+#            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+#              login="$(aws ecr get-login)"
+#              ${login}
+#              docker tag app "${ECR_ENDPOINT}/app:${CIRCLE_SHA1}"
+#              docker push "${ECR_ENDPOINT}/app:${CIRCLE_SHA1}"
+#            fi
