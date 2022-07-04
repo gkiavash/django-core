@@ -1,0 +1,13 @@
+docker build -t gkiavash/django_core:0.0.1 .
+
+git pull && docker-compose down && docker-compose up
+
+docker exec -it core_app_1 python3 manage.py makemigrations
+docker exec -it core_app_1 python3 manage.py migrate
+
+docker exec -it core_app_1 python3 manage.py test
+docker exec -it core_app_1 python3 manage.py shell
+docker exec -it core_app_1 python3 manage.py createsuperuser
+docker exec -it core_app_1 python3 manage.py test app_core.tests
+
+docker exec -it db psql -U postgres

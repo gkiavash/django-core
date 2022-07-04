@@ -1,0 +1,9 @@
+src/.env
+*.pyc
+src/__pycache__
+src/media
+src/db.sqlite3
+src/venv/
+
+.idea/
+/venv/
